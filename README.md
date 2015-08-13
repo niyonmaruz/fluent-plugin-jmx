@@ -5,12 +5,15 @@
 ## Installation
 
 Add this line to your application's Gemfile:
+
     gem 'fluent-plugin-jmx'
 
 And then execute:
+
     $ bundle
 
 Or install it yourself as:
+
     $ gem install fluent-plugin-jmx
 
 ## Configuration
