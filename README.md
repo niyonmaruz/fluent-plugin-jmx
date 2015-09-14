@@ -23,7 +23,7 @@ Or install it yourself as:
     <source>
       type jmx
       tag jmx.memory
-      url http://127.0.0.1:38778/jolokia
+      url http://127.0.0.1:8778/jolokia
       mbean java.lang:type=Memory
       attribute HeapMemoryUsage
       interval 60
