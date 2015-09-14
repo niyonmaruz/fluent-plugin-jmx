@@ -28,7 +28,7 @@ Or install it yourself as:
       attribute HeapMemoryUsage
       interval 60
       inner_path used
-    </match>
+    </source>
 
 ## Contributing
 
