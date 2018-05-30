@@ -9,6 +9,10 @@ module Fluent
     config_param :attribute, :string, :default => nil
     config_param :inner_path, :string, :default => nil
 
+    unless method_defined?(:router)
+      define_method("router") { Fluent::Engine }
+    end
+
     def initialize
       super
       require 'net/http'
@@ -46,7 +50,7 @@ module Fluent
       @time = Engine.now
       record = _get_record
       @log.debug(record)
-      Engine.emit(@tag, @time, record)
+      router.emit(@tag, @time, record)
     rescue => e
       @log.error('faild to run', error: e.to_s, error_class: e.class.to_s)
       @log.error_backtrace
