@@ -4,12 +4,12 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'fluent-plugin-jmx'
-  spec.version       = '0.0.3'
+  spec.version       = '0.0.4'
   spec.authors       = ['Hidenori Suzuki']
   spec.email         = ['hidenori.suzuki@yahoo.com']
   spec.summary       = 'a fluent plugin'
   spec.description   = 'jolokia input plugin'
-  spec.homepage      = 'https://github.com/6pongi/fluent-plugin-jmx'
+  spec.homepage      = 'https://github.com/niyonmaruz/fluent-plugin-jmx/blob/master/README.md'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")

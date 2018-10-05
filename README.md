@@ -16,12 +16,16 @@ Or install it yourself as:
 
     $ gem install fluent-plugin-jmx
 
+When you use with td-agent, install it as below:
+
+    $ sudo /opt/td-agent/embedded/bin/fluent-gem install fluent-plugin-jmx
+
 ## Configuration
 
 ### Example
 
     <source>
-      type jmx
+      @type jmx
       tag jmx.memory
       url http://127.0.0.1:8778/jolokia
       mbean java.lang:type=Memory
@@ -30,13 +34,9 @@ Or install it yourself as:
       inner_path used
     </source>
 
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new [Pull Request](../../pull/new/master)
+    <match jmx.**>
+      @type stdout
+    </match>
 
 ## Copyright
 

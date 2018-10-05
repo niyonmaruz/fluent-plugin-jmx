@@ -3,3 +3,5 @@
 vendor/
 *.bundle
 *.git
+*.gem
+pkg/*
