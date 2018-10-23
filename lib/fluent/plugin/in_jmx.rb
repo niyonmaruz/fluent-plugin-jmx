@@ -1,8 +1,12 @@
 # coding: utf-8
-require 'fluent/input'
-module Fluent
-  class JmxInput < Fluent::Input
+require 'json'
+require 'fluent/plugin/input'
+module Fluent::Plugin
+  class OsqueryInput < Fluent::Plugin::Input
     Fluent::Plugin.register_input('jmx', self)
+
+    helpers :timer
+
     config_param :tag, :string, default: 'jmx'
     config_param :interval, :integer, default: 60
     config_param :url, :string, default: 'http://127.0.0.1:8778/jolokia'
@@ -18,7 +22,6 @@ module Fluent
       super
       require 'net/http'
       require 'uri'
-      require 'json'
     end
 
     def configure(conf)
@@ -26,31 +29,20 @@ module Fluent
     end
 
     def start
-      @loop = Coolio::Loop.new
-      @tw = TimerWatcher.new(interval, true, log, &method(:execute))
-      @tw.attach(@loop)
-      @thread = Thread.new(&method(:run))
+      super
+      timer_execute(:in_jmx, interval, &method(:execute))
     end
 
     def shutdown
-      @tw.detach
-      @loop.stop
-      @thread.join
-    end
-
-    def run
-      @loop.run
-    rescue => e
-      @log.error 'unexpected error', error: e.to_s
-      @log.error_backtrace
+      super
     end
 
     private
 
     def execute
-      @time = Engine.now
+      @time = Fluent::Engine.now
       record = _get_record
-      @log.debug(record)
+      log.debug(record)
       router.emit(@tag, @time, record)
     rescue => e
       @log.error('faild to run', error: e.to_s, error_class: e.class.to_s)
@@ -73,21 +65,6 @@ module Fluent
         end
       end
       record
-    end
-
-    class TimerWatcher < Coolio::TimerWatcher
-      def initialize(interval, repeat, log, &callback)
-        @log = log
-        @callback = callback
-        super(interval, repeat)
-      end
-
-      def on_timer
-        @callback.call
-      rescue => e
-        @log.error e.to_s
-        @log.error_backtrace
-      end
     end
   end
 end
